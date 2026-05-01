@@ -1,24 +1,22 @@
-import Hero from "@/components/Hero";
-import Stack from "@/components/Stack";
-import About from "@/components/About";
-import Team from "@/components/Team";
-import Footer from "@/components/Footer";
-import Showcase from "@/components/Showcase";
-import { DeviceSimulator } from "@/components/DeviceSimulator";
-import FeaturedWork from "@/components/FeaturedWork";
+import Nav from '@/components/Nav';
+import Hero from '@/components/Hero';
+import About from '@/components/About';
+import Work from '@/components/Work';
+import Stack from '@/components/Stack';
+import Contact from '@/components/Contact';
+import Marquee from '@/components/Marquee';
 
-export default function Page(){
+export default function Page() {
   return (
-  <main className="appd-root">
-      <Hero/>
-      <About/>
-      <Stack/>
-      <Team/>
-      <FeaturedWork/>
-      <Showcase/>
-      <DeviceSimulator/>
-      <Footer/>
-    
+    <main>
+      <Nav />
+      <Hero />
+      <Marquee />
+      <About />
+      <Marquee inverted />
+      <Work />
+      <Stack />
+      <Contact />
     </main>
   );
 }
