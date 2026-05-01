@@ -1,0 +1,196 @@
+@import "tailwindcss";
+
+:root {
+  --appd-bg: #000000;
+  --appd-panel: #1a1a1a;
+  --appd-soft: #2d2d2d;
+  --appd-stroke: rgba(255, 255, 255, 0.12);
+  --appd-text: #f1f5f9;
+  --appd-muted: rgba(241, 245, 249, 0.65);
+  --appd-accent: #52d3ff;
+  --appd-accent-2: #7c5cff;
+}
+
+@layer utilities {
+  .appd-shell {
+    background: linear-gradient(
+        135deg,
+        rgba(82, 211, 255, 0.04),
+        rgba(124, 92, 255, 0.04)
+      ),
+      linear-gradient(to bottom, rgba(10, 10, 10, 0.94), rgba(0, 0, 0, 0.98)),
+      #000000;
+    color: var(--appd-text);
+    min-height: 100vh;
+  }
+
+  .appd-root {
+    background: linear-gradient(
+        180deg,
+        rgba(20, 20, 20, 0.8) 0%,
+        rgba(0, 0, 0, 0.95) 50%,
+        rgba(0, 0, 0, 1) 100%
+      ),
+      var(--appd-bg);
+    color: var(--appd-text);
+    position: relative;
+    overflow-x: hidden;
+  }
+
+  .appd-section {
+    @apply relative w-full px-6 md:px-12 lg:px-20;
+  }
+
+  .appd-kicker {
+    @apply uppercase tracking-[0.3em] text-xs text-white/60;
+  }
+
+  .appd-title {
+    @apply text-5xl md:text-7xl font-bold leading-[1.05] tracking-tight;
+    background: linear-gradient(135deg, #6fdcff 0%, #9ec7ff 45%, #bfa8ff 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    filter: drop-shadow(0 6px 18px rgba(82, 211, 255, 0.12));
+  }
+
+  .appd-subtitle {
+    @apply text-lg md:text-xl text-white/70;
+  }
+
+  .appd-card {
+    @apply rounded-2xl border border-white/10 bg-white/5 backdrop-blur;
+  }
+
+  .appd-panel {
+    @apply relative overflow-hidden rounded-[2rem] border border-white/10 bg-white/[0.045] backdrop-blur-xl;
+  }
+
+  .appd-surface {
+    @apply rounded-2xl border border-white/10 bg-white/[0.04] backdrop-blur;
+  }
+
+  .appd-divider {
+    @apply h-px w-full bg-gradient-to-r from-transparent via-white/20 to-transparent;
+  }
+
+  .appd-caption {
+    @apply text-sm text-white/65;
+  }
+
+  .appd-chip {
+    @apply rounded-full border border-white/15 bg-white/5 px-3 py-1 text-xs uppercase tracking-[0.18em];
+  }
+
+  .appd-grid {
+    background-image: linear-gradient(
+        to right,
+        rgba(255, 255, 255, 0.05) 1px,
+        transparent 1px
+      ),
+      linear-gradient(
+        to bottom,
+        rgba(255, 255, 255, 0.05) 1px,
+        transparent 1px
+      );
+    background-size: 64px 64px;
+  }
+
+  .appd-glow {
+    box-shadow: 0 8px 36px rgba(82, 211, 255, 0.12);
+  }
+
+  .phone-frame {
+    @apply relative w-56 md:w-64 h-[460px] md:h-[520px] rounded-[2.4rem] border border-white/15 bg-gradient-to-b from-white/10 via-white/5 to-white/0 shadow-2xl;
+  }
+
+  .phone-notch {
+    @apply absolute left-1/2 top-4 h-6 w-24 -translate-x-1/2 rounded-full bg-black/60;
+  }
+
+  .screen-card {
+    @apply relative h-full w-full overflow-hidden rounded-[2.1rem] bg-gradient-to-br from-[#1a2847] via-[#253555] to-[#0f172a];
+  }
+
+  .screen-dots {
+    @apply absolute right-4 top-4 flex gap-1;
+  }
+
+  .screen-dot {
+    @apply size-1.5 rounded-full bg-white/30;
+  }
+
+  .stack-pill {
+    @apply rounded-full border border-white/10 bg-white/5 px-4 py-2 text-sm;
+  }
+
+  .appd-float-icon {
+    @apply absolute flex h-10 w-10 items-center justify-center rounded-2xl border border-white/15 bg-white/10 text-lg text-white/80 backdrop-blur;
+  }
+
+  .appd-animated-title {
+    @apply flex flex-col gap-1 text-4xl uppercase leading-[0.95] text-white md:text-5xl;
+  }
+
+  .appd-animated-word {
+    opacity: 0;
+    transform: translate3d(6px, 28px, -80px) rotateY(8deg) rotateX(-18deg);
+    transform-origin: 50% 50% -80px;
+    will-change: opacity, transform;
+    backface-visibility: hidden;
+  }
+
+  .appd-feature-icon {
+    will-change: transform;
+  }
+
+  .appd-showcase-card {
+    will-change: opacity, transform;
+  }
+}
+
+@keyframes appdFloat {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-6px);
+  }
+}
+
+@keyframes appdPulse {
+  0%,
+  100% {
+    opacity: 0.45;
+  }
+  50% {
+    opacity: 0.75;
+  }
+}
+
+@keyframes appdGlowShift {
+  0%,
+  100% {
+    transform: translate(0, 0);
+  }
+  50% {
+    transform: translate(6px, -6px);
+  }
+}
+
+.appd-float {
+  animation: appdFloat 8s ease-in-out infinite;
+}
+
+.appd-pulse {
+  animation: appdPulse 5s ease-in-out infinite;
+}
+
+.appd-glow-shift {
+  animation: appdGlowShift 6s ease-in-out infinite;
+}
+
+.appd-drift {
+  animation: appdFloat 10s ease-in-out infinite;
+}
