@@ -1,233 +1,130 @@
 'use client';
-
-import { useRef, useEffect, useState } from 'react';
+import { motion } from 'framer-motion';
+import { Badge } from '@/components/ui/badge';
+import SpotlightCard from '@/components/ui/SpotlightCard';
+import TiltCard from '@/components/ui/TiltCard';
 
 const projects = [
   {
-    num: '01',
     title: 'Phi Launcher',
-    category: 'Android · Home Launcher',
-    year: '2024',
-    desc: 'A minimal, opinionated home screen launcher built for focus. Eliminates distractions through intentional constraint. Jetpack Compose, MVVM architecture, custom gesture engine.',
-    tags: ['Kotlin', 'Jetpack Compose', 'Android'],
-    color: '#1a2035',
-    textColor: '#6fb3d3',
-    wide: true,
+    year: '2024', index: '01',
+    tag: 'Android App · Play Store',
+    link: 'https://play.google.com/store/apps/details?id=com.aryan.philauncher',
+    tools: ['Jetpack Compose','Kotlin','Room','DataStore','GraphQL'],
+    desc: '27,000+ downloads. 4.4★ rating. 1.5L+ gross revenue on Play Store. Built a two-tier fuzzy search algorithm with Kotlin Coroutines for lightning-fast app discovery.',
+    image: null, // → replace with "/images/phi-launcher.png"
+    accent: '#7F52FF',
   },
   {
-    num: '02',
-    title: 'Hype.pass',
-    category: 'Android · Security',
-    year: '2024',
-    desc: 'Zero-knowledge password manager with biometric encryption, breach detection, and a UI that makes security feel effortless rather than burdensome.',
-    tags: ['Kotlin', 'AES-256', 'BiometricAPI'],
-    color: '#1a1a14',
-    textColor: '#f47b23',
-    wide: false,
+    title: 'PixelFi',
+    year: '2024', index: '02',
+    tag: 'Full-stack · Web App',
+    link: '#',
+    tools: ['Next.js','FastAPI','Kafka','Docker','ML','Clerk'],
+    desc: 'Financial portfolio platform with ML-powered market predictions, Apache Kafka messaging, and a fully Dockerized microservices backend.',
+    image: null, // → replace with "/images/pixelfi.png"
+    accent: '#4285F4',
   },
   {
-    num: '03',
-    title: 'Fizanto Fuzz',
-    category: 'Android · Social',
-    year: '2023',
-    desc: 'Real-time campus social platform with E2E encrypted messaging, ephemeral stories, and a recommendation engine tuned for small communities.',
-    tags: ['Kotlin', 'Firebase', 'WebRTC'],
-    color: '#1a1220',
-    textColor: '#b8a0d0',
-    wide: false,
-  },
-  {
-    num: '04',
-    title: 'Huddle',
-    category: 'Android · Productivity',
-    year: '2023',
-    desc: 'Team task management with an opinionated workflow. No feature bloat — just the primitives needed to ship. Offline-first with CRDT sync.',
-    tags: ['Flutter', 'Dart', 'SQLite'],
-    color: '#0f1a18',
-    textColor: '#6bb88a',
-    wide: true,
+    title: 'GradLoop',
+    year: '2024', index: '03',
+    tag: 'Full-stack · AI-powered',
+    link: '#',
+    tools: ['Next.js','TypeScript','Prisma','Supabase','WebSockets','Mistral AI'],
+    desc: 'Alumni networking with real-time chat, Mistral AI resume generation, and profile analysis. Prisma + Supabase + Webhooks backend.',
+    image: null, // → replace with "/images/gradloop.png"
+    accent: '#3ECF8E',
   },
 ];
 
-const ProjectCard = ({ project, visible, index }: { project: typeof projects[0], visible: boolean, index: number }) => {
-  const [hovered, setHovered] = useState(false);
-
+export default function Work() {
   return (
-    <div
-      className={project.wide ? '' : ''}
-      style={{
-        gridColumn: project.wide ? 'span 2' : 'span 1',
-        opacity: visible ? 1 : 0,
-        transform: visible ? 'translateY(0)' : 'translateY(40px)',
-        transition: `opacity 0.7s ease ${index * 0.12}s, transform 0.7s ease ${index * 0.12}s`,
-      }}
-    >
-      <div
-        className="project-card"
-        onMouseEnter={() => setHovered(true)}
-        onMouseLeave={() => setHovered(false)}
-        style={{
-          background: project.color,
-          padding: project.wide ? '64px 64px' : '48px 48px',
-          minHeight: project.wide ? 320 : 360,
-          display: 'flex',
-          flexDirection: 'column',
-          justifyContent: 'space-between',
-          position: 'relative',
-          overflow: 'hidden',
-          transition: 'transform 0.3s ease',
-          transform: hovered ? 'scale(0.99)' : 'scale(1)',
-        }}
-      >
-        {/* Big number watermark */}
-        <div
-          className="display"
-          style={{
-            position: 'absolute',
-            right: -16,
-            bottom: -24,
-            fontSize: 180,
-            fontWeight: 900,
-            color: 'transparent',
-            WebkitTextStroke: `1px rgba(255,255,255,0.06)`,
-            lineHeight: 1,
-            userSelect: 'none',
-            transition: 'transform 0.4s ease',
-            transform: hovered ? 'translate(-8px, -8px)' : 'translate(0,0)',
-          }}
-        >
-          {project.num}
-        </div>
+    <section id="works" className="section" style={{ background: 'var(--surface)', borderTop: '3px solid rgba(255,100,0,0.35)', position: 'relative', overflow: 'hidden' }}>
 
-        {/* Top row */}
-        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', zIndex: 1 }}>
-          <span
-            style={{
-              fontFamily: "'DM Mono', monospace",
-              fontSize: 10,
-              letterSpacing: '0.15em',
-              textTransform: 'uppercase',
-              color: 'rgba(255,255,255,0.4)',
-            }}
+      <div className="container" style={{ position: 'relative', zIndex: 2 }}>
+
+        <motion.div className="section-label" initial={{ opacity:0, x:-30 }} whileInView={{ opacity:1, x:0 }} viewport={{ once:true }}>
+          04 — PROJECTS
+        </motion.div>
+
+        {/* Manga heading + CTA */}
+        <div style={{ display:'flex', justifyContent:'space-between', alignItems:'flex-end', flexWrap:'wrap', gap:'24px', marginBottom:'60px' }}>
+          <motion.h2
+            initial={{ opacity:0, y:30 }} whileInView={{ opacity:1, y:0 }} viewport={{ once:true }}
+            style={{ fontFamily:"'Caesar Dressing', cursive", fontSize:'clamp(36px,7vw,88px)', lineHeight:0.9, color:'#fff5e6', textShadow:'4px 4px 0 #ff4500' }}
           >
-            {project.category}
-          </span>
-          <span
-            style={{
-              fontFamily: "'DM Mono', monospace",
-              fontSize: 10,
-              color: 'rgba(255,255,255,0.3)',
-            }}
-          >
-            {project.year}
-          </span>
+            FIRE<br/><span style={{ color:'var(--accent-2)' }}>WORKS</span>
+          </motion.h2>
+          <motion.a
+            href="#" className="manga-btn manga-btn-outline"
+            initial={{ opacity:0 }} whileInView={{ opacity:1 }} viewport={{ once:true }}
+          >VIEW ALL ↗</motion.a>
         </div>
 
-        {/* Content */}
-        <div style={{ zIndex: 1 }}>
-          <h3
-            className="display"
-            style={{
-              fontSize: project.wide ? 52 : 38,
-              fontWeight: 800,
-              color: '#fff',
-              letterSpacing: '-0.03em',
-              lineHeight: 1,
-              marginBottom: 20,
-              transition: 'color 0.3s ease',
-            }}
-          >
-            {project.title}
-          </h3>
-          <p
-            style={{
-              fontSize: 15,
-              lineHeight: 1.7,
-              color: 'rgba(255,255,255,0.55)',
-              maxWidth: project.wide ? 560 : '100%',
-              marginBottom: 32,
-              opacity: hovered ? 1 : 0.7,
-              transition: 'opacity 0.3s ease',
-            }}
-          >
-            {project.desc}
-          </p>
-          <div style={{ display: 'flex', gap: 10, flexWrap: 'wrap' }}>
-            {project.tags.map(tag => (
-              <span
-                key={tag}
-                style={{
-                  fontFamily: "'DM Mono', monospace",
-                  fontSize: 10,
-                  letterSpacing: '0.1em',
-                  textTransform: 'uppercase',
-                  color: project.textColor,
-                  border: `1px solid ${project.textColor}40`,
-                  padding: '5px 12px',
-                }}
-              >
-                {tag}
-              </span>
-            ))}
-          </div>
-        </div>
-
-        {/* Arrow */}
-        <div
-          style={{
-            position: 'absolute',
-            top: 48,
-            right: 48,
-            width: 40,
-            height: 40,
-            border: '1px solid rgba(255,255,255,0.15)',
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            color: 'rgba(255,255,255,0.5)',
-            fontSize: 18,
-            transition: 'all 0.3s ease',
-            transform: hovered ? 'rotate(45deg)' : 'rotate(0)',
-            background: hovered ? 'rgba(255,255,255,0.1)' : 'transparent',
-          }}
-        >
-          ↗
-        </div>
-      </div>
-    </div>
-  );
-};
-
-const Work = () => {
-  const sectionRef = useRef<HTMLDivElement>(null);
-  const [visible, setVisible] = useState(false);
-
-  useEffect(() => {
-    const obs = new IntersectionObserver(
-      ([e]) => { if (e.isIntersecting) setVisible(true); },
-      { threshold: 0.05 }
-    );
-    if (sectionRef.current) obs.observe(sectionRef.current);
-    return () => obs.disconnect();
-  }, []);
-
-  return (
-    <section id="work" className="section" ref={sectionRef} style={{ background: 'var(--paper-dark)' }}>
-      <div className="container">
-        <div style={{ display: 'flex', alignItems: 'center', gap: 24, marginBottom: 64 }}>
-          <span className="tag">03 — Selected Work</span>
-          <div style={{ flex: 1, height: 1, background: 'var(--rule)' }} />
-          <span className="tag" style={{ opacity: 0.5 }}>2020 – 2025</span>
-        </div>
-
-        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 16 }}>
+        {/* Cards */}
+        <div style={{ display: 'flex', flexDirection: 'column', gap: '24px' }}>
           {projects.map((p, i) => (
-            <ProjectCard key={p.num} project={p} visible={visible} index={i} />
+            <motion.div
+              key={i}
+              initial={{ opacity:0, y:40, rotate: i%2===0 ? -0.5 : 0.5 }}
+              whileInView={{ opacity:1, y:0, rotate:0 }}
+              viewport={{ once:true, margin:'-60px' }}
+              transition={{ delay: i*0.12, type:'spring', stiffness:160 }}
+            >
+              <TiltCard tiltStrength={5} style={{ borderRadius:'0px' }}>
+                <SpotlightCard
+                  spotlightColor={`${p.accent}15`}
+                  style={{ background:'#0a0400', border:`2px solid ${p.accent}40`, position:'relative', overflow:'hidden' }}
+                >
+                  {/* Chapter number watermark */}
+                  <div style={{ position:'absolute', top:0, right:0, fontFamily:"'Bangers', cursive", fontSize:'100px', color:`${p.accent}10`, lineHeight:1, userSelect:'none', pointerEvents:'none' }}>{p.index}</div>
+
+                  {/* Top accent strip */}
+                  <div style={{ background:`linear-gradient(90deg, ${p.accent}, transparent)`, height:'3px', position:'absolute', top:0, left:0, right:0 }} />
+
+                  <div style={{ display:'grid', gridTemplateColumns:'1fr 1fr', minHeight:'260px' }}>
+
+                    {/* Left — info */}
+                    <div style={{ padding:'clamp(20px,4vw,40px)', display:'flex', flexDirection:'column', justifyContent:'space-between', borderRight:`1px solid ${p.accent}25` }}>
+                      <div>
+                        {/* Tag + year */}
+                        <div style={{ display:'flex', justifyContent:'space-between', alignItems:'center', marginBottom:'16px', flexWrap:'wrap', gap:'8px' }}>
+                          <span style={{ fontFamily:"'Caesar Dressing', cursive", fontSize:'11px', color:p.accent, letterSpacing:'0.15em' }}>{p.tag}</span>
+                          <span style={{ fontSize:'12px', color:'var(--muted)' }}>{p.year}</span>
+                        </div>
+                        <h3 style={{ fontFamily:"'Caesar Dressing', cursive", fontSize:'clamp(22px,3.5vw,38px)', color:'#fff5e6', textShadow:`2px 2px 0 ${p.accent}`, marginBottom:'12px', lineHeight:1.1 }}>{p.title}</h3>
+                        <p style={{ fontSize:'13px', lineHeight:1.7, color:'rgba(255,245,230,0.6)', marginBottom:'20px' }}>{p.desc}</p>
+                      </div>
+                      <div style={{ display:'flex', flexWrap:'wrap', gap:'8px' }}>
+                        {p.tools.map(t => (
+                          <Badge key={t} variant="outline" style={{ fontSize:'11px', padding:'3px 10px', borderColor:`${p.accent}40`, color:p.accent, borderRadius:'2px', fontFamily:"'Instrument Sans', sans-serif" }}>{t}</Badge>
+                        ))}
+                      </div>
+                    </div>
+
+                    {/* Right — image/placeholder */}
+                    <div style={{ position:'relative', background:`linear-gradient(135deg, ${p.accent}12 0%, rgba(0,0,0,0) 100%)`, display:'flex', alignItems:'center', justifyContent:'center', minHeight:'260px' }}>
+                      {p.image ? (
+                        <img src={p.image} alt={p.title} style={{ position:'absolute', inset:0, width:'100%', height:'100%', objectFit:'cover' }} />
+                      ) : (
+                        /* ── Drop your screenshot here by setting image: "/images/xxx.png" ── */
+                        <div style={{ display:'flex', flexDirection:'column', alignItems:'center', gap:'12px', opacity:0.3 }}>
+                          <div style={{ width:'52px', height:'52px', background:p.accent, display:'flex', alignItems:'center', justifyContent:'center', fontFamily:"'Caesar Dressing', cursive", fontSize:'24px', color:'#fff' }}>
+                            {p.title[0]}
+                          </div>
+                          <span style={{ fontFamily:"'Caesar Dressing', cursive", fontSize:'11px', color:'var(--muted)', letterSpacing:'0.15em' }}>ADD SCREENSHOT</span>
+                        </div>
+                      )}
+                      {/* View button */}
+                      <a href={p.link} target="_blank" rel="noreferrer" className="manga-btn" style={{ position:'absolute', bottom:'16px', right:'16px', fontSize:'12px', padding:'8px 16px' }}>VIEW ↗</a>
+                    </div>
+                  </div>
+                </SpotlightCard>
+              </TiltCard>
+            </motion.div>
           ))}
         </div>
       </div>
     </section>
   );
-};
-
-export default Work;
+}
