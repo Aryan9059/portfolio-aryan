@@ -73,8 +73,9 @@ export default function FeaturedWork() {
     const featuredCardPos =
       window.innerWidth >= 1600 ? FEATURED_CARD_POS_LARGE : FEATURED_CARD_POS_SMALL;
 
-    if (!imagesContainerRef.current) return;
-    imagesContainerRef.current.innerHTML = "";
+    const imagesContainer = imagesContainerRef.current;
+    if (!imagesContainer) return;
+    imagesContainer.innerHTML = "";
 
     FLOATING_BACKGROUND_IMAGES.forEach((imageSrc, i) => {
       const featuredImgCard = document.createElement("div");
@@ -136,7 +137,7 @@ export default function FeaturedWork() {
         scale: 0,
       });
 
-      imagesContainerRef.current.appendChild(featuredImgCard);
+      imagesContainer.appendChild(featuredImgCard);
     });
 
     featuredImgCardsRef.current =
