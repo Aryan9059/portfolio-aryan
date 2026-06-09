@@ -289,8 +289,11 @@ function Terminal() {
   const [histIdx, setHistIdx]     = useState(-1);
   const bottomRef = useRef<HTMLDivElement>(null);
   const inputRef  = useRef<HTMLInputElement>(null);
+  const hasMounted = useRef(false);
 
   useEffect(() => {
+    // Skip scroll on initial mount — only scroll when new output is added
+    if (!hasMounted.current) { hasMounted.current = true; return; }
     bottomRef.current?.scrollIntoView({ behavior: 'smooth' });
   }, [history]);
 
@@ -385,7 +388,6 @@ function Terminal() {
           onKeyDown={onKey}
           spellCheck={false}
           autoComplete="off"
-          autoFocus
           placeholder="type a command…"
           style={{
             flex: 1, background: 'transparent', border: 'none', outline: 'none',
