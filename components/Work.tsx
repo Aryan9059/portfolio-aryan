@@ -7,11 +7,11 @@ import TiltCard from '@/components/ui/TiltCard';
 const projects = [
   {
     title: 'Phi Launcher',
-    year: '2024', index: '01',
-    tag: 'Android App · Play Store',
-    link: 'https://play.google.com/store/apps/details?id=com.aryan.philauncher',
+    year: '2025', index: '01',
+    tag: 'Android Launcher',
+    link: 'https://play.google.com/store/apps/details?id=com.launcher.hype',
     tools: ['Jetpack Compose','Kotlin','Room','DataStore','GraphQL'],
-    desc: '27,000+ downloads. 4.4★ rating. 1.5L+ gross revenue on Play Store. Built a two-tier fuzzy search algorithm with Kotlin Coroutines for lightning-fast app discovery.',
+    desc: '27,000+ downloads. 4.4★ rating. 1.5L+ gross revenue on Play Store. Built an Android launcher with a loads of features like Focus Mode, App Launch Delay, Custom Theming, and much more.',
     image: null, // → replace with "/images/phi-launcher.png"
     accent: '#7F52FF',
   },

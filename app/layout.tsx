@@ -2,8 +2,8 @@ import type { Metadata } from 'next';
 import './globals.css';
 
 export const metadata: Metadata = {
-  title: 'Aryan Srivastava — Mobile Developer',
-  description: 'Android Native developer crafting precise, high-performance mobile experiences.',
+  title: 'cuteFlame',
+  description: 'An IT undergrad at IIIT Allahabad.',
 };
 
 export default function RootLayout({

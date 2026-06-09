@@ -19,7 +19,7 @@ const panelVariant = {
 
 export default function About() {
   return (
-    <section id="about" className="section" style={{ background: 'var(--paper)', borderTop: '3px solid rgba(255,100,0,0.4)', position: 'relative', overflow: 'hidden' }}>
+    <section id="about" className="section" style={{ background: 'var(--paper)', position: 'relative', overflow: 'hidden' }}>
 
       {/* Background halftone dots */}
       <div className="halftone" style={{ position: 'absolute', inset: 0, opacity: 0.5, pointerEvents: 'none' }} />

@@ -164,7 +164,7 @@ export default function Hero() {
               transition={{ repeat: Infinity, duration: 0.8, ease: 'steps(2)' }}
               style={{ width: 8, height: 8, borderRadius: '50%', background: '#ff4500', display: 'inline-block', boxShadow: '0 0 10px #ff4500' }}
             />
-            ⚡ OPEN TO PROJECTS ⚡
+            PREPPING FOR INTERNS
           </motion.div>
 
           {/* Big MANGA heading */}
@@ -205,11 +205,11 @@ export default function Hero() {
                 fontSize: 'clamp(18px,3.5vw,36px)',
                 color: 'var(--accent-2)',
                 letterSpacing: '0.25em',
-                marginTop: '8px',
+                marginTop: '20px',
                 textShadow: '2px 2px 0 rgba(0,0,0,0.5)',
               }}
             >
-              ANDROID DEVELOPER · FIRE CODER
+              STUDENT AT IIIT ALLAHABAD
             </motion.div>
           </div>
 
@@ -244,44 +244,17 @@ export default function Hero() {
         </div>
       </div>
 
-      {/* Flame silhouette divider at bottom */}
+      {/* Simple rectangle gradient divider at bottom */}
       <div style={{ position: 'relative', zIndex: 5, marginTop: 'auto' }}>
         <svg viewBox="0 0 1200 120" preserveAspectRatio="none" style={{ display: 'block', width: '100%', height: 'clamp(60px,10vw,120px)' }}>
           <defs>
-            <linearGradient id="flameGrad" x1="0" y1="0" x2="0" y2="1">
-              <stop offset="0%" stopColor="#ff6b00" />
-              <stop offset="100%" stopColor="#ff2200" stopOpacity="0.4" />
+            <linearGradient id="rectGrad" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0%" stopColor="rgba(0,0,0,0)" />
+              <stop offset="100%" stopColor="var(--paper)" />
             </linearGradient>
-            <style>{`
-              @keyframes fmorph {
-                0%,100% { d: path("M0,120 L0,80 C30,55 50,90 80,65 C110,40 130,75 160,55 C190,35 210,70 240,50 C270,30 300,65 330,45 C360,25 385,65 415,45 C445,25 470,60 500,40 C530,20 560,60 590,40 C620,20 645,60 675,40 C705,20 730,60 760,40 C790,20 820,60 850,40 C880,20 905,60 940,40 C970,20 1000,60 1030,40 C1060,20 1085,60 1120,45 C1150,30 1170,70 1200,55 L1200,120 Z"); }
-                50% { d: path("M0,120 L0,70 C30,45 55,85 85,60 C115,35 135,70 165,50 C195,30 215,68 245,48 C275,28 302,62 332,42 C362,22 387,63 417,43 C447,23 472,58 502,38 C532,18 562,58 592,38 C622,18 647,58 677,38 C707,18 732,58 762,38 C792,18 822,58 852,38 C882,18 907,58 942,38 C972,18 1002,58 1032,38 C1062,18 1087,58 1122,43 C1152,28 1172,68 1200,52 L1200,120 Z"); }
-              }
-              .hero-flame { animation: fmorph 2.2s ease-in-out infinite; }
-            `}</style>
           </defs>
-          <path
-            className="hero-flame"
-            d="M0,120 L0,80 C30,55 50,90 80,65 C110,40 130,75 160,55 C190,35 210,70 240,50 C270,30 300,65 330,45 C360,25 385,65 415,45 C445,25 470,60 500,40 C530,20 560,60 590,40 C620,20 645,60 675,40 C705,20 730,60 760,40 C790,20 820,60 850,40 C880,20 905,60 940,40 C970,20 1000,60 1030,40 C1060,20 1085,60 1120,45 C1150,30 1170,70 1200,55 L1200,120 Z"
-            fill="url(#flameGrad)"
-          />
+          <rect x="0" y="0" width="1200" height="120" fill="url(#rectGrad)" />
         </svg>
-      </div>
-
-      {/* Spinning badge */}
-      <div style={{ position: 'absolute', top: '90px', right: '48px', zIndex: 10 }}>
-        <div style={{ position: 'relative', width: '100px', height: '100px' }}>
-          <motion.div animate={{ rotate: 360 }} transition={{ repeat: Infinity, duration: 10, ease: 'linear' }}
-            style={{ width: '100%', height: '100%' }}>
-            <svg viewBox="0 0 100 100" style={{ width: '100%', height: '100%' }}>
-              <defs><path id="sbadge" d="M50,50 m-40,0 a40,40 0 1,1 80,0 a40,40 0 1,1 -80,0"/></defs>
-              <text fontSize="10" fill="rgba(255,100,0,0.7)" letterSpacing="2" fontFamily="'Caesar Dressing', cursive">
-                <textPath href="#sbadge">FIRE CODER · OPEN SOURCE · </textPath>
-              </text>
-            </svg>
-          </motion.div>
-          <div style={{ position: 'absolute', top: '50%', left: '50%', transform: 'translate(-50%,-50%)', fontSize: '24px' }}> </div>
-        </div>
       </div>
     </section>
   );
