@@ -99,15 +99,23 @@ function TiltProjectCard({ project, onClick }: { project: Project; onClick: () =
             <div style={{ position: 'absolute', inset: 0, background: `radial-gradient(ellipse at 50% 50%, ${bgGlow}25, transparent 70%)` }} />
 
             {/* Corner brackets */}
-            {[['top','left'],['top','right'],['bottom','left'],['bottom','right']].map(([v,h]) => (
-              <div key={`${v}${h}`} style={{
-                position: 'absolute', [v]: 10, [h]: 10, width: 12, height: 12,
-                borderTop:    v === 'top'    ? `1.5px solid ${accent}60` : 'none',
-                borderBottom: v === 'bottom' ? `1.5px solid ${accent}60` : 'none',
-                borderLeft:   h === 'left'   ? `1.5px solid ${accent}60` : 'none',
-                borderRight:  h === 'right'  ? `1.5px solid ${accent}60` : 'none',
-              }} />
-            ))}
+            {(['top-left','top-right','bottom-left','bottom-right'] as const).map((corner) => {
+              const isTop  = corner.startsWith('top');
+              const isLeft = corner.endsWith('left');
+              const s: React.CSSProperties = {
+                position: 'absolute',
+                top:    isTop   ? 10 : undefined,
+                bottom: !isTop  ? 10 : undefined,
+                left:   isLeft  ? 10 : undefined,
+                right:  !isLeft ? 10 : undefined,
+                width: 12, height: 12,
+                borderTop:    isTop   ? `1.5px solid ${accent}60` : 'none',
+                borderBottom: !isTop  ? `1.5px solid ${accent}60` : 'none',
+                borderLeft:   isLeft  ? `1.5px solid ${accent}60` : 'none',
+                borderRight:  !isLeft ? `1.5px solid ${accent}60` : 'none',
+              };
+              return <div key={corner} style={s} />;
+            })}
 
             {/* Floating logo */}
             <div style={{ transform: logoShift, transition: 'transform 0.18s ease', zIndex: 2, display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 8 }}>

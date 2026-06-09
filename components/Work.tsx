@@ -116,15 +116,23 @@ function ProjectCard({ p, i }: { p: typeof projects[0]; i: number }) {
               }} />
 
               {/* Corner accent brackets */}
-              {[['top','left'],['top','right'],['bottom','left'],['bottom','right']].map(([v,h]) => (
-                <div key={`${v}-${h}`} style={{
-                  position:'absolute', [v]:12, [h]:12, width:16, height:16,
-                  borderTop: v === 'top' ? `1.5px solid ${p.accent}70` : 'none',
-                  borderBottom: v === 'bottom' ? `1.5px solid ${p.accent}70` : 'none',
-                  borderLeft: h === 'left' ? `1.5px solid ${p.accent}70` : 'none',
-                  borderRight: h === 'right' ? `1.5px solid ${p.accent}70` : 'none',
-                }} />
-              ))}
+              {(['top-left','top-right','bottom-left','bottom-right'] as const).map((corner) => {
+                const isTop    = corner.startsWith('top');
+                const isLeft   = corner.endsWith('left');
+                const style: React.CSSProperties = {
+                  position: 'absolute',
+                  top:    isTop    ? 12 : undefined,
+                  bottom: !isTop   ? 12 : undefined,
+                  left:   isLeft   ? 12 : undefined,
+                  right:  !isLeft  ? 12 : undefined,
+                  width: 16, height: 16,
+                  borderTop:    isTop    ? `1.5px solid ${p.accent}70` : 'none',
+                  borderBottom: !isTop   ? `1.5px solid ${p.accent}70` : 'none',
+                  borderLeft:   isLeft   ? `1.5px solid ${p.accent}70` : 'none',
+                  borderRight:  !isLeft  ? `1.5px solid ${p.accent}70` : 'none',
+                };
+                return <div key={corner} style={style} />;
+              })}
 
               {/* Floating logo — parallax layer */}
               <div style={{

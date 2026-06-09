@@ -1,5 +1,5 @@
 'use client';
-import { motion, useScroll, useTransform } from 'framer-motion';
+import { motion, useScroll, useTransform, type Variants } from 'framer-motion';
 import SplitText from '@/components/ui/SplitText';
 import DecryptedText from '@/components/ui/DecryptedText';
 
@@ -52,15 +52,15 @@ const embers = Array.from({ length: 18 }, (_, i) => ({
 }));
 
 // Stop-motion jitter for text
-const stopMotionVariants = {
+const stopMotionVariants: Variants = {
   hidden: { opacity: 0, y: 40, skewX: 5 },
   visible: (i: number) => ({
     opacity: 1, y: 0, skewX: 0,
     transition: {
-      type: 'spring', stiffness: 300, damping: 20,
+      type: 'spring' as const,
+      stiffness: 300,
+      damping: 20,
       delay: i * 0.12,
-      // Step-based easing for stop-motion feel
-      ease: [0.22, 0.68, 0, 1.2],
     },
   }),
 };
