@@ -1,5 +1,6 @@
 'use client';
 import { motion } from 'framer-motion';
+import { Mail, Linkedin, Github, Instagram } from 'lucide-react';
 
 export default function Contact() {
   return (
@@ -70,47 +71,29 @@ export default function Contact() {
             transition={{ delay:0.6, type:'spring', stiffness:200 }}
             style={{ display:'flex', gap:'16px', flexWrap:'wrap', justifyContent:'center' }}
           >
-            <a href="mailto:aryansrivastava9059@gmail.com" className="manga-btn">
-                SAY HELLO
+            <a href="mailto:aryansrivastava9059@gmail.com" className="manga-btn manga-btn-outline">
+              <Mail size={18} style={{ marginRight: 8 }} aria-hidden />
+              EMAIL ME
             </a>
             <a href="https://linkedin.com/in/aryan-srivastava9059" target="_blank" rel="noreferrer" className="manga-btn manga-btn-outline">
-              LINKEDIN ↗
+              <Linkedin size={18} style={{ marginRight: 8 }} aria-hidden />
+              LINKEDIN
             </a>
             <a href="https://github.com/Aryan9059" target="_blank" rel="noreferrer" className="manga-btn manga-btn-outline">
-              GITHUB ↗
+              <Github size={18} style={{ marginRight: 8 }} aria-hidden />
+              GITHUB
+            </a>
+            <a href="https://www.instagram.com/cute__flame/" target="_blank" rel="noreferrer" className="manga-btn manga-btn-outline">
+              <Instagram size={18} style={{ marginRight: 8 }} aria-hidden />
+              INStAGRAM
             </a>
           </motion.div>
         </motion.div>
 
         {/* Footer */}
-        <footer style={{ marginTop:'60px', paddingTop:'32px', borderTop:'1px solid rgba(255,100,0,0.2)', display:'flex', justifyContent:'space-between', alignItems:'center', flexWrap:'wrap', gap:'24px' }}>
-          <motion.div
-            initial={{ opacity:0, x:-30 }}
-            whileInView={{ opacity:1, x:0 }}
-            viewport={{ once:true }}
-            style={{ fontFamily:"'Caesar Dressing', cursive", fontSize:'clamp(18px,4vw,28px)', color:'#ff6b00', textShadow:'2px 2px 0 rgba(255,69,0,0.4)' }}
-          >
-              ARYAN SRIVASTAVA
-          </motion.div>
-          <motion.div
-            initial={{ opacity:0, x:30 }}
-            whileInView={{ opacity:1, x:0 }}
-            viewport={{ once:true }}
-            style={{ display:'flex', gap:'clamp(12px,4vw,32px)', flexWrap:'wrap', justifyContent:'center' }}
-          >
-            {[
-              { label:'GitHub', href:'https://github.com/Aryan9059' },
-              { label:'LinkedIn', href:'https://linkedin.com/in/aryan-srivastava9059' },
-              { label:'Email', href:'mailto:aryansrivastava9059@gmail.com' },
-            ].map(link => (
-              <motion.a key={link.label} href={link.href} target={link.label!=='Email'?'_blank':undefined} rel={link.label!=='Email'?'noreferrer':undefined}
-                whileHover={{ color:'var(--accent)', y:-2 }}
-                style={{ fontFamily:"'Caesar Dressing', cursive", fontSize:'14px', color:'var(--muted)', textDecoration:'none', letterSpacing:'0.08em' }}
-              >{link.label}</motion.a>
-            ))}
-          </motion.div>
+        <footer style={{ marginTop:'60px', paddingTop:'32px', display:'flex', justifyContent:'space-between', alignItems:'center', flexWrap:'wrap', gap:'24px' }}>
           <div style={{ fontSize:'12px', color:'rgba(255,245,230,0.3)', fontFamily:"'Instrument Sans', sans-serif", width:'100%', textAlign:'center', marginTop:'16px' }}>
-            FORGED WITH   BY ARYAN SRIVASTAVA · {new Date().getFullYear()}
+            MADE WITH 🧡 BY PIXEL PERFECT · © {new Date().getFullYear()}
           </div>
         </footer>
       </div>

@@ -1,53 +1,8 @@
 'use client';
 import { motion } from 'framer-motion';
-import InfiniteMarquee from '@/components/ui/InfiniteMarquee';
-
-const rows: { label: string; dot: string }[][] = [
-  [
-    { label: 'Kotlin', dot: '#7F52FF' }, { label: 'TypeScript', dot: '#3178C6' },
-    { label: 'Java', dot: '#ED8B00' }, { label: 'Python', dot: '#3572A5' },
-    { label: 'C / C++', dot: '#f34b7d' }, { label: 'SQL', dot: '#e38c00' },
-    { label: 'JavaScript', dot: '#F7DF1E' }, { label: 'Scheme', dot: '#9B59B6' },
-  ],
-  [
-    { label: 'Jetpack Compose', dot: '#4285F4' }, { label: 'Android SDK', dot: '#3DDC84' },
-    { label: 'Spring Boot', dot: '#6DB33F' }, { label: 'Next.js', dot: '#fff' },
-    { label: 'React.js', dot: '#61DAFB' }, { label: 'Retrofit', dot: '#ff6b00' },
-    { label: 'FastAPI', dot: '#059669' }, { label: 'Express.js', dot: '#aaa' },
-    { label: 'Tailwind CSS', dot: '#06B6D4' },
-  ],
-  [
-    { label: 'PostgreSQL', dot: '#336791' }, { label: 'Supabase', dot: '#3ECF8E' },
-    { label: 'Firebase', dot: '#FFCA28' }, { label: 'Docker', dot: '#2496ED' },
-    { label: 'Apache Kafka', dot: '#ff4500' }, { label: 'Prisma', dot: '#5A67D8' },
-    { label: 'Room DB', dot: '#7F52FF' }, { label: 'Git', dot: '#F05032' },
-  ],
-];
+import SkillConstellation from '@/components/SkillConstellation';
 
 const concepts = ['DSA','OOP','System Design (HLD/LLD)','MVVM','REST APIs','DBMS','OS','Computer Networks','Clean Architecture'];
-
-function FirePill({ label, dot }: { label: string; dot: string }) {
-  return (
-    <motion.div
-      whileHover={{ scale: 1.08, borderColor: dot }}
-      style={{
-        display: 'inline-flex', alignItems: 'center', gap: '8px',
-        padding: '8px 16px',
-        background: '#0a0400',
-        border: '2px solid rgba(255,100,0,0.25)',
-        fontFamily: "'Instrument Sans', sans-serif",
-        fontSize: '13px', fontWeight: 600, color: '#fff5e6',
-        whiteSpace: 'nowrap',
-        clipPath: 'polygon(4px 0%,100% 0%,calc(100% - 4px) 100%,0% 100%)',
-        cursor: 'default',
-        transition: 'border-color 0.2s',
-      }}
-    >
-      <span style={{ width: 7, height: 7, borderRadius: '50%', background: dot, flexShrink: 0, boxShadow: `0 0 6px ${dot}` }} />
-      {label}
-    </motion.div>
-  );
-}
 
 export default function TechStack() {
   return (
@@ -71,34 +26,40 @@ export default function TechStack() {
           <h2 style={{ fontFamily:"'Caesar Dressing', cursive", fontSize:'clamp(36px,7vw,88px)', lineHeight:0.9, color:'#fff5e6', textShadow:'4px 4px 0 #ff4500' }}>
             MY<br/><span style={{ color:'var(--accent-2)' }}>ARSENAL</span>
           </h2>
-          <p style={{ fontSize:'14px', color:'var(--muted)', marginTop:'16px', maxWidth:'400px', lineHeight:1.7 }}>
-            From Android-native to full-stack web — every tool forged in the flames of real projects.
+          <p style={{ fontSize:'14px', color:'var(--muted)', marginTop:'16px', maxWidth:'420px', lineHeight:1.7 }}>
+            Hover any node to reveal proficiency, projects forged with it, and its connected technologies.
           </p>
         </motion.div>
-      </div>
 
-      {/* Full-bleed marquee rows */}
-      <motion.div initial={{ opacity:0 }} whileInView={{ opacity:1 }} viewport={{ once:true }} transition={{ duration:0.8 }}
-        style={{ display:'flex', flexDirection:'column', gap:'14px', marginBottom:'14px' }}>
-        {rows.map((row, ri) => (
-          <InfiniteMarquee
-            key={ri}
-            items={row.map(item => <FirePill key={item.label} {...item} />)}
-            speed={ri===1 ? 40 : 55}
-            direction={ri % 2 === 0 ? 'left' : 'right'}
-            gap={10}
-          />
-        ))}
-      </motion.div>
+        {/* ── Skill Constellation ── */}
+        <motion.div
+          initial={{ opacity:0, y:20 }}
+          whileInView={{ opacity:1, y:0 }}
+          viewport={{ once:true }}
+          transition={{ duration:0.7 }}
+          style={{
+            position: 'relative',
+            background: 'rgba(255,69,0,0.03)',
+            border: '1.5px solid rgba(255,100,0,0.18)',
+            padding: '0px 24px 24px',
+            marginBottom: '56px',
+          }}
+        >
+          {/* Corner decorations */}
+          <div style={{ position:'absolute', top:0, left:0, width:18, height:18, borderTop:'2px solid var(--accent)', borderLeft:'2px solid var(--accent)' }} />
+          <div style={{ position:'absolute', top:0, right:0, width:18, height:18, borderTop:'2px solid var(--accent)', borderRight:'2px solid var(--accent)' }} />
+          <div style={{ position:'absolute', bottom:0, left:0, width:18, height:18, borderBottom:'2px solid var(--accent)', borderLeft:'2px solid var(--accent)' }} />
+          <div style={{ position:'absolute', bottom:0, right:0, width:18, height:18, borderBottom:'2px solid var(--accent)', borderRight:'2px solid var(--accent)' }} />
 
-      {/* Core concepts */}
-      <div className="container" style={{ position:'relative', zIndex:2 }}>
+          <SkillConstellation />
+        </motion.div>
+
+        {/* Core concepts */}
         <motion.div
           initial={{ opacity:0, y:20 }}
           whileInView={{ opacity:1, y:0 }}
           viewport={{ once:true }}
           transition={{ delay:0.3 }}
-          style={{ marginTop:'48px' }}
         >
           <p style={{ fontFamily:"'Caesar Dressing', cursive", fontSize:'14px', color:'var(--accent-2)', letterSpacing:'0.2em', textTransform:'uppercase', marginBottom:'16px' }}>
             ◆ Core Concepts ◆

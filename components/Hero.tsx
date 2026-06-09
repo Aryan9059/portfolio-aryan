@@ -104,38 +104,6 @@ export default function Hero() {
 
       <div className="container" style={{ position: 'relative', zIndex: 5, flex: 1, display: 'flex', flexDirection: 'column' }}>
 
-        {/* ── NAV ── */}
-        <motion.nav
-          initial={{ opacity: 0, y: -30 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
-          style={{
-            display: 'flex', justifyContent: 'space-between', alignItems: 'center',
-            padding: '28px 0 24px',
-            borderBottom: '2px solid rgba(255,100,0,0.3)',
-            flexWrap: 'wrap', gap: '16px',
-          }}
-        >
-          <span className="manga-btn manga-btn-outline" style={{ fontSize: '13px', padding: '8px 20px', pointerEvents: 'none', clipPath: 'none' }}>
-              cuteFlame
-          </span>
-          <div style={{ display: 'flex', gap: 'clamp(16px,3vw,32px)', flexWrap: 'wrap' }}>
-            {['About', 'Experience', 'Tech Stack', 'Projects', 'Contact'].map((item, i) => (
-              <motion.a
-                key={item}
-                href={`#${item.toLowerCase().replace(' ', '-')}`}
-                style={{ color: 'rgba(255,245,230,0.6)', textDecoration: 'none', fontFamily: "'Caesar Dressing', cursive", fontSize: '14px', letterSpacing: '0.1em' }}
-                whileHover={{ color: '#ff6b00', y: -2 }}
-                initial={{ opacity: 0, y: -10 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.1 + i * 0.07 }}
-              >
-                {item}
-              </motion.a>
-            ))}
-          </div>
-        </motion.nav>
-
         {/* ── HERO BODY ── */}
         <div style={{
           flex: 1, display: 'flex', flexDirection: 'column',
@@ -161,7 +129,7 @@ export default function Hero() {
           >
             <motion.span
               animate={{ opacity: [1, 0.3, 1] }}
-              transition={{ repeat: Infinity, duration: 0.8, ease: 'steps(2)' }}
+              transition={{ repeat: Infinity, duration: 0.8, ease: 'linear' }}
               style={{ width: 8, height: 8, borderRadius: '50%', background: '#ff4500', display: 'inline-block', boxShadow: '0 0 10px #ff4500' }}
             />
             PREPPING FOR INTERNS
@@ -181,7 +149,7 @@ export default function Hero() {
               }}
             >
               {/* Stop-motion line by line */}
-              {['ARYAN', 'SRIVASTAVA'].map((word, wi) => (
+              {['Fire can be', 'cute too!'].map((word, wi) => (
                 <motion.div
                   key={wi}
                   custom={wi}
@@ -209,7 +177,7 @@ export default function Hero() {
                 textShadow: '2px 2px 0 rgba(0,0,0,0.5)',
               }}
             >
-              STUDENT AT IIIT ALLAHABAD
+              AND SO AM I!
             </motion.div>
           </div>
 
@@ -225,10 +193,7 @@ export default function Hero() {
               color: 'rgba(255,245,230,0.65)',
             }}
           >
-            <DecryptedText
-              text="Building blazing-fast mobile apps with Kotlin & Jetpack Compose. 27K+ downloads. 1.5L+ revenue. Shipping fire since day one."
-              speed={22} maxIterations={6} animateOn="load"
-            />
+            Hi, I&apos;m Aryan Srivastava! Pre-Final year student at IIIT Allahabad studying IT. Looking for SWE internships for Summer 2027.
           </motion.p>
 
           {/* CTA buttons */}

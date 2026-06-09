@@ -11,29 +11,54 @@ const experiences = [
     company: 'Bitance Labs', location: 'Remote',
     date: 'Mar 2025 – Nov 2025',
     points: [
-      'Built Nexus ID — a production crypto wallet Android app — using Kotlin & MVVM. Team of 4+.',
+      'Built Nexus ID, a production crypto wallet Android app using Kotlin and XML with a team of 4+.',
       'Integrated Spring Boot REST APIs & Web3 via Retrofit + Gson. Led UX design ideation.',
     ],
     skills: ['Kotlin','Android XML','MVVM','Retrofit','Gson','Spring Boot','Web3'],
-    accent: '#ff4500', glow: 'rgba(255,69,0,0.2)',
+    accent: '#3b82f6', glow: 'rgba(59,130,246,0.2)',
   },
   {
     type: 'por', index: '02',
     role: 'Coordinator, App Dev Wing',
-    company: 'Geekhaven, IIIT Allahabad', location: 'On-site',
+    company: 'Geekhaven', location: 'IIIT Allahabad',
     date: 'Aug 2025 – Present',
-    points: ['Managing app dev initiatives, workshops & mentoring junior developers.'],
-    skills: ['Leadership','Management','Mentorship'],
+    points: [
+      'Managing app dev initiatives, workshops & mentoring junior developers.',
+      'Taking workshops on Android fundamentals, Jetpack Compose & modern development practices.',
+      'Leading app dev projects in college.'
+    ],
+    skills: ['Leadership','Jetpack Compose', 'Android Development', 'Mentorship'],
     accent: '#ff6b00', glow: 'rgba(255,107,0,0.2)',
   },
   {
     type: 'por', index: '03',
     role: 'Executive, App Dev Wing',
-    company: 'Club of Professionals, IIIT Allahabad', location: 'On-site',
-    date: 'Sep 2025 – Present',
-    points: ['Organizing technical events & executing strategies for club members\' professional growth.'],
-    skills: ['Event Organization','Strategy','Execution'],
+    company: 'Club of Professionals', location: 'IIIT Allahabad',
+    date: 'Jan 2025 – Present',
+    points: ['Contributing to college\'s ERP system development and maintenance, enhancing student services and administrative efficiency.'],
+    skills: ['Kotlin'],
     accent: '#ffaa00', glow: 'rgba(255,170,0,0.2)',
+  },
+  {
+    type: 'por', index: '04',
+    role: 'Senior Member, IoT Wing',
+    company: 'Tesla', location: 'IIIT Allahabad',
+    date: 'Sep 2025 – Present',
+    points: ['Took workshops on embedded systems and IoT development. Contributing to college\'s Electronics & Communication department.'],
+    skills: ['Rasberry Pi', 'Arduino', 'ESP32', 'C++'],
+    accent: '#ff0000', glow: 'rgba(255,0,0,0.2)',
+  },
+  {
+    type: 'por', index: '05',
+    role: 'Member, Design Wing',
+    company: 'E-Cell', location: 'IIIT Allahabad',
+    date: 'Dec 2024 – Sep 2025',
+    points: [
+      'Designed flyers and posters for promoting E-Cell events and workshops.',
+      'Designed the pitch deck for the marquee event E-Summit 2025.'
+    ],
+    skills: ['Figma', 'Adobe Illustrator', 'Canva'],
+    accent: '#ff00ff', glow: 'rgba(255,0,255,0.2)',
   },
 ];
 

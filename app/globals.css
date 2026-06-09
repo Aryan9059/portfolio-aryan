@@ -21,6 +21,40 @@
 
 html { scroll-behavior: smooth; }
 
+/* ── Themed scrollbars ── */
+
+/* Firefox */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: rgba(255, 80, 0, 0.45) rgba(255, 50, 0, 0.06);
+}
+
+/* Chrome / Edge / Safari */
+::-webkit-scrollbar {
+  width: 5px;
+  height: 5px;
+}
+
+::-webkit-scrollbar-track {
+  background: rgba(255, 50, 0, 0.05);
+  border-left: 1px solid rgba(255, 80, 0, 0.08);
+}
+
+::-webkit-scrollbar-thumb {
+  background: rgba(255, 80, 0, 0.4);
+  border-radius: 0;           /* keep it sharp / manga-styled */
+  transition: background 0.2s;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(255, 80, 0, 0.75);
+  box-shadow: 0 0 6px rgba(255, 69, 0, 0.6);
+}
+
+::-webkit-scrollbar-corner {
+  background: var(--paper);
+}
+
 body {
   background: var(--paper);
   color: var(--ink);
