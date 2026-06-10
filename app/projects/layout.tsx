@@ -1,8 +1,8 @@
 import type { Metadata } from 'next';
 
 export const metadata: Metadata = {
-  title: 'Projects — Aryan Sharma',
-  description: 'A full catalogue of projects by Aryan Sharma — Android apps, full-stack web apps, tools and more.',
+  title: 'Projects',
+  description: 'List of projects I have worked on, showcasing my skills and experience in software development.',
 };
 
 export default function ProjectsLayout({ children }: { children: React.ReactNode }) {

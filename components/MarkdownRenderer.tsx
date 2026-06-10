@@ -1,215 +1,438 @@
 'use client';
-import React from 'react';
+import React, { CSSProperties } from 'react';
+import ReactMarkdown from 'react-markdown';
+import remarkGfm from 'remark-gfm';
+import rehypeRaw from 'rehype-raw';
+import type { Components } from 'react-markdown';
 
-// Very lightweight markdown → JSX renderer (no dependencies)
-// Handles: ##/### headings, **bold**, `inline code`, ```blocks```, - lists, | tables, > blockquotes, paragraphs
+// ── Theme tokens that match the site's manga/amber design system ──────────────
+const ink = '#fff5e6';
+const inkMuted = 'rgba(255,245,230,0.65)';
+const inkDim = 'rgba(255,245,230,0.42)';
+const surface = 'rgba(0,0,0,0.45)';
+const ruleColor = 'rgba(255,100,0,0.15)';
+const fontMono = "'Courier New', Courier, monospace";
+const fontSans = "'Instrument Sans', sans-serif";
+const fontDisplay = "'Caesar Dressing', cursive";
 
-type Token =
-  | { type: 'h1'; text: string }
-  | { type: 'h2'; text: string }
-  | { type: 'h3'; text: string }
-  | { type: 'hr' }
-  | { type: 'blockquote'; text: string }
-  | { type: 'li'; text: string }
-  | { type: 'codeblock'; lang: string; code: string }
-  | { type: 'table'; rows: string[][] }
-  | { type: 'p'; text: string }
-  | { type: 'blank' };
+// ── Build component overrides per-accent ─────────────────────────────────────
+function buildComponents(accent: string): Components {
+  const accentFaint = `${accent}18`;
+  const accentBorder = `${accent}30`;
+  const accentBorderStrong = `${accent}50`;
 
-function tokenize(md: string): Token[] {
-  const lines = md.split('\n');
-  const tokens: Token[] = [];
-  let i = 0;
-  while (i < lines.length) {
-    const line = lines[i];
-    // code block
-    if (line.trimStart().startsWith('```')) {
-      const lang = line.trim().slice(3).trim();
-      i++;
-      const codeLines: string[] = [];
-      while (i < lines.length && !lines[i].trimStart().startsWith('```')) {
-        codeLines.push(lines[i]);
-        i++;
-      }
-      tokens.push({ type: 'codeblock', lang, code: codeLines.join('\n') });
-      i++;
-      continue;
-    }
-    // heading
-    if (/^### /.test(line)) { tokens.push({ type: 'h3', text: line.slice(4) }); i++; continue; }
-    if (/^## /.test(line))  { tokens.push({ type: 'h2', text: line.slice(3) }); i++; continue; }
-    if (/^# /.test(line))   { tokens.push({ type: 'h1', text: line.slice(2) }); i++; continue; }
-    // hr
-    if (/^---+$/.test(line.trim())) { tokens.push({ type: 'hr' }); i++; continue; }
-    // blockquote
-    if (/^> /.test(line)) { tokens.push({ type: 'blockquote', text: line.slice(2) }); i++; continue; }
-    // list item
-    if (/^[-*] /.test(line)) { tokens.push({ type: 'li', text: line.slice(2) }); i++; continue; }
-    // table
-    if (/^\|/.test(line) && i + 1 < lines.length && /^\|[-| ]+\|/.test(lines[i + 1])) {
-      const rows: string[][] = [];
-      while (i < lines.length && /^\|/.test(lines[i])) {
-        const row = lines[i].split('|').filter((_, idx, arr) => idx !== 0 && idx !== arr.length - 1).map(c => c.trim());
-        if (!row.every(c => /^[-: ]+$/.test(c))) rows.push(row);
-        i++;
-      }
-      tokens.push({ type: 'table', rows });
-      continue;
-    }
-    // blank
-    if (line.trim() === '') { tokens.push({ type: 'blank' }); i++; continue; }
-    // paragraph
-    tokens.push({ type: 'p', text: line }); i++;
-  }
-  return tokens;
-}
+  return {
+    // ── Headings ──────────────────────────────────────────────────────────────
+    h1: ({ children }) => (
+      <h1 style={{
+        fontFamily: fontDisplay,
+        fontSize: 'clamp(22px, 4vw, 30px)',
+        color: ink,
+        textShadow: `2px 2px 0 ${accent}`,
+        margin: '8px 0 20px',
+        lineHeight: 1.2,
+        letterSpacing: '0.03em',
+      }}>
+        {children}
+      </h1>
+    ),
 
-// Inline formatting: **bold** and `code`
-function inlineFormat(text: string, accent: string): React.ReactNode[] {
-  const parts = text.split(/(\*\*[^*]+\*\*|`[^`]+`)/g);
-  return parts.map((part, i) => {
-    if (part.startsWith('**') && part.endsWith('**')) {
-      return <strong key={i} style={{ color: '#fff5e6', fontWeight: 700 }}>{part.slice(2, -2)}</strong>;
-    }
-    if (part.startsWith('`') && part.endsWith('`')) {
-      return (
-        <code key={i} style={{
-          background: 'rgba(255,100,0,0.12)', border: '1px solid rgba(255,100,0,0.25)',
-          padding: '1px 6px', fontSize: '0.85em', color: accent,
-          fontFamily: "'Courier New', monospace", borderRadius: 2,
-        }}>{part.slice(1, -1)}</code>
-      );
-    }
-    return part;
-  });
-}
-
-export default function ReactMarkdownRenderer({ content, accent }: { content: string; accent: string }) {
-  const tokens = tokenize(content);
-  const elements: React.ReactNode[] = [];
-  let liBuffer: Token[] = [];
-
-  const flushList = () => {
-    if (!liBuffer.length) return;
-    elements.push(
-      <ul key={`ul-${elements.length}`} style={{ paddingLeft: 20, marginBottom: 16 }}>
-        {liBuffer.map((t, i) => (
-          <li key={i} style={{ fontSize: 13, lineHeight: 1.8, color: 'rgba(255,245,230,0.7)', marginBottom: 2 }}>
-            <span style={{ color: accent, marginRight: 8 }}>▸</span>
-            {t.type === 'li' ? inlineFormat(t.text, accent) : null}
-          </li>
-        ))}
-      </ul>
-    );
-    liBuffer = [];
-  };
-
-  for (let i = 0; i < tokens.length; i++) {
-    const t = tokens[i];
-
-    if (t.type === 'li') { liBuffer.push(t); continue; }
-    flushList();
-
-    if (t.type === 'blank') continue;
-
-    if (t.type === 'h1') {
-      elements.push(
-        <h1 key={i} style={{ fontFamily: "'Caesar Dressing', cursive", fontSize: 28, color: '#fff5e6', textShadow: `2px 2px 0 ${accent}`, marginBottom: 16, marginTop: 8, lineHeight: 1.2 }}>
-          {t.text}
-        </h1>
-      );
-    } else if (t.type === 'h2') {
-      elements.push(
-        <div key={i} style={{ marginTop: 28, marginBottom: 14 }}>
-          <h2 style={{ fontFamily: "'Caesar Dressing', cursive", fontSize: 20, color: accent, letterSpacing: '0.05em', lineHeight: 1.2 }}>{t.text}</h2>
-          <div style={{ height: 1, background: `linear-gradient(90deg, ${accent}50, transparent)`, marginTop: 6 }} />
-        </div>
-      );
-    } else if (t.type === 'h3') {
-      elements.push(
-        <h3 key={i} style={{ fontFamily: "'Caesar Dressing', cursive", fontSize: 15, color: '#fff5e6', marginTop: 20, marginBottom: 10, letterSpacing: '0.05em' }}>
-          ◆ {t.text}
-        </h3>
-      );
-    } else if (t.type === 'hr') {
-      elements.push(<div key={i} style={{ height: 1, background: 'rgba(255,100,0,0.15)', margin: '20px 0' }} />);
-    } else if (t.type === 'blockquote') {
-      elements.push(
-        <blockquote key={i} style={{
-          borderLeft: `3px solid ${accent}`,
-          paddingLeft: 16, margin: '16px 0',
-          background: `${accent}0a`,
-          padding: '10px 16px',
+    h2: ({ children }) => (
+      <div style={{ marginTop: 28, marginBottom: 14 }}>
+        <h2 style={{
+          fontFamily: fontDisplay,
+          fontSize: 18,
+          color: accent,
+          letterSpacing: '0.06em',
+          lineHeight: 1.3,
         }}>
-          <p style={{ fontSize: 13, color: 'rgba(255,245,230,0.6)', lineHeight: 1.7, fontStyle: 'italic' }}>
-            {inlineFormat(t.text, accent)}
-          </p>
-        </blockquote>
-      );
-    } else if (t.type === 'codeblock') {
-      elements.push(
-        <div key={i} style={{ marginBottom: 20, position: 'relative' }}>
-          {t.lang && (
+          {children}
+        </h2>
+        <div style={{
+          height: 1,
+          background: `linear-gradient(90deg, ${accent}55, transparent)`,
+          marginTop: 6,
+        }} />
+      </div>
+    ),
+
+    h3: ({ children }) => (
+      <h3 style={{
+        fontFamily: fontDisplay,
+        fontSize: 14,
+        color: ink,
+        marginTop: 20,
+        marginBottom: 10,
+        letterSpacing: '0.05em',
+        display: 'flex',
+        alignItems: 'center',
+        gap: 8,
+      }}>
+        <span style={{ color: accent }}>◆</span>
+        {children}
+      </h3>
+    ),
+
+    h4: ({ children }) => (
+      <h4 style={{
+        fontFamily: fontSans,
+        fontWeight: 700,
+        fontSize: 13,
+        color: inkMuted,
+        marginTop: 16,
+        marginBottom: 8,
+        letterSpacing: '0.08em',
+        textTransform: 'uppercase',
+      }}>
+        {children}
+      </h4>
+    ),
+
+    // ── Paragraph ─────────────────────────────────────────────────────────────
+    p: ({ children }) => (
+      <p style={{
+        fontFamily: fontSans,
+        fontSize: 13,
+        lineHeight: 1.85,
+        color: inkMuted,
+        marginBottom: 14,
+      }}>
+        {children}
+      </p>
+    ),
+
+    // ── Inline code ───────────────────────────────────────────────────────────
+    code: ({ children, className, ...props }) => {
+      const isInline = !className;
+      if (isInline) {
+        return (
+          <code style={{
+            background: accentFaint,
+            border: `1px solid ${accentBorder}`,
+            borderRadius: 3,
+            padding: '1px 6px',
+            fontSize: '0.84em',
+            color: accent,
+            fontFamily: fontMono,
+          }} {...props}>
+            {children}
+          </code>
+        );
+      }
+      // block code (handled by <pre> below)
+      return <code className={className} {...props}>{children}</code>;
+    },
+
+    // ── Code block ────────────────────────────────────────────────────────────
+    pre: ({ children }) => {
+      // Extract language label from child code element's className
+      let lang = '';
+      if (React.isValidElement(children)) {
+        const childEl = children as React.ReactElement<{ className?: string }>;
+        const cls = childEl.props?.className ?? '';
+        const match = cls.match(/language-(\w+)/);
+        if (match) lang = match[1];
+      }
+      return (
+        <div style={{ marginBottom: 20, position: 'relative' }}>
+          {lang && (
             <div style={{
-              display: 'inline-block', fontSize: 9, fontFamily: "'Instrument Sans', sans-serif",
-              fontWeight: 700, letterSpacing: '0.15em', textTransform: 'uppercase',
-              color: accent, background: `${accent}18`, border: `1px solid ${accent}30`,
-              padding: '2px 8px', marginBottom: 0,
-            }}>{t.lang}</div>
+              display: 'inline-flex',
+              alignItems: 'center',
+              fontSize: 9,
+              fontFamily: fontSans,
+              fontWeight: 700,
+              letterSpacing: '0.15em',
+              textTransform: 'uppercase',
+              color: accent,
+              background: accentFaint,
+              border: `1px solid ${accentBorder}`,
+              borderBottom: 'none',
+              padding: '3px 10px',
+            }}>
+              {lang}
+            </div>
           )}
           <pre style={{
-            background: 'rgba(0,0,0,0.5)', border: `1px solid rgba(255,100,0,0.2)`,
-            padding: '14px 16px', overflowX: 'auto',
-            fontSize: 12, lineHeight: 1.7,
-            color: 'rgba(255,245,230,0.8)',
-            fontFamily: "'Courier New', Courier, monospace",
+            background: surface,
+            border: `1px solid ${ruleColor}`,
+            borderTop: lang ? `1px solid ${accentBorder}` : undefined,
+            padding: '14px 16px',
+            overflowX: 'auto',
+            fontSize: 12,
+            lineHeight: 1.75,
+            color: 'rgba(255,245,230,0.85)',
+            fontFamily: fontMono,
             margin: 0,
-            borderTop: t.lang ? 'none' : undefined,
           }}>
-            <code>{t.code}</code>
+            {children}
           </pre>
         </div>
       );
-    } else if (t.type === 'table') {
-      const [header, ...body] = t.rows;
-      elements.push(
-        <div key={i} style={{ overflowX: 'auto', marginBottom: 20 }}>
-          <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: 12 }}>
-            <thead>
-              <tr>
-                {header?.map((cell, ci) => (
-                  <th key={ci} style={{
-                    padding: '8px 12px', textAlign: 'left',
-                    background: `${accent}18`, border: `1px solid ${accent}30`,
-                    color: accent, fontFamily: "'Caesar Dressing', cursive",
-                    fontSize: 11, letterSpacing: '0.1em',
-                  }}>{cell}</th>
-                ))}
-              </tr>
-            </thead>
-            <tbody>
-              {body.map((row, ri) => (
-                <tr key={ri}>
-                  {row.map((cell, ci) => (
-                    <td key={ci} style={{
-                      padding: '8px 12px', border: `1px solid rgba(255,100,0,0.12)`,
-                      color: 'rgba(255,245,230,0.7)', fontSize: 12, lineHeight: 1.6,
-                    }}>{inlineFormat(cell, accent)}</td>
-                  ))}
-                </tr>
-              ))}
-            </tbody>
-          </table>
+    },
+
+    // ── Blockquote ────────────────────────────────────────────────────────────
+    blockquote: ({ children }) => (
+      <blockquote style={{
+        borderLeft: `3px solid ${accent}`,
+        background: accentFaint,
+        padding: '10px 16px',
+        margin: '16px 0',
+        borderRadius: '0 3px 3px 0',
+      }}>
+        <div style={{
+          fontSize: 13,
+          color: inkDim,
+          lineHeight: 1.7,
+          fontStyle: 'italic',
+          fontFamily: fontSans,
+        }}>
+          {children}
         </div>
+      </blockquote>
+    ),
+
+    // ── Lists ─────────────────────────────────────────────────────────────────
+    ul: ({ children }) => (
+      <ul style={{
+        paddingLeft: 0,
+        marginBottom: 16,
+        listStyle: 'none',
+      }}>
+        {children}
+      </ul>
+    ),
+
+    ol: ({ children }) => (
+      <ol style={{
+        paddingLeft: 20,
+        marginBottom: 16,
+        color: inkMuted,
+        fontSize: 13,
+        lineHeight: 1.85,
+      }}>
+        {children}
+      </ol>
+    ),
+
+    li: ({ children, ...props }) => {
+      // Detect if parent is ordered list via props
+      const isOrdered = (props as { ordered?: boolean }).ordered;
+      if (isOrdered) {
+        return (
+          <li style={{
+            fontSize: 13,
+            lineHeight: 1.85,
+            color: inkMuted,
+            marginBottom: 3,
+          }}>
+            {children}
+          </li>
+        );
+      }
+      return (
+        <li style={{
+          fontSize: 13,
+          lineHeight: 1.85,
+          color: inkMuted,
+          marginBottom: 3,
+          display: 'flex',
+          alignItems: 'flex-start',
+          gap: 8,
+        }}>
+          <span style={{ color: accent, flexShrink: 0, marginTop: 2 }}>▸</span>
+          <span>{children}</span>
+        </li>
       );
-    } else if (t.type === 'p') {
-      elements.push(
-        <p key={i} style={{ fontSize: 13, lineHeight: 1.8, color: 'rgba(255,245,230,0.65)', marginBottom: 12 }}>
-          {inlineFormat(t.text, accent)}
-        </p>
-      );
-    }
-  }
-  flushList();
-  return <div style={{ fontFamily: "'Instrument Sans', sans-serif" }}>{elements}</div>;
+    },
+
+    // ── Horizontal rule ───────────────────────────────────────────────────────
+    hr: () => (
+      <div style={{
+        height: 1,
+        background: `linear-gradient(90deg, ${accent}40, transparent)`,
+        margin: '24px 0',
+      }} />
+    ),
+
+    // ── Table (GFM) ───────────────────────────────────────────────────────────
+    table: ({ children }) => (
+      <div style={{ overflowX: 'auto', marginBottom: 20 }}>
+        <table style={{
+          width: '100%',
+          borderCollapse: 'collapse',
+          fontSize: 12,
+          fontFamily: fontSans,
+        }}>
+          {children}
+        </table>
+      </div>
+    ),
+
+    thead: ({ children }) => (
+      <thead style={{ background: accentFaint }}>
+        {children}
+      </thead>
+    ),
+
+    tbody: ({ children }) => <tbody>{children}</tbody>,
+
+    tr: ({ children }) => (
+      <tr style={{ borderBottom: `1px solid ${ruleColor}` }}>
+        {children}
+      </tr>
+    ),
+
+    th: ({ children }) => (
+      <th style={{
+        padding: '8px 14px',
+        textAlign: 'left',
+        background: accentFaint,
+        border: `1px solid ${accentBorder}`,
+        color: accent,
+        fontFamily: fontDisplay,
+        fontSize: 11,
+        letterSpacing: '0.1em',
+        fontWeight: 700,
+      }}>
+        {children}
+      </th>
+    ),
+
+    td: ({ children }) => (
+      <td style={{
+        padding: '8px 14px',
+        border: `1px solid ${ruleColor}`,
+        color: inkMuted,
+        fontSize: 12,
+        lineHeight: 1.6,
+        verticalAlign: 'top',
+      }}>
+        {children}
+      </td>
+    ),
+
+    // ── Links ─────────────────────────────────────────────────────────────────
+    a: ({ href, children }) => (
+      <a
+        href={href}
+        target="_blank"
+        rel="noopener noreferrer"
+        style={{
+          color: accent,
+          textDecoration: 'underline',
+          textDecorationColor: `${accent}50`,
+          textUnderlineOffset: 3,
+          transition: 'color 0.15s, text-decoration-color 0.15s',
+          fontFamily: fontSans,
+        }}
+        onMouseEnter={e => {
+          (e.currentTarget as HTMLAnchorElement).style.color = ink;
+          (e.currentTarget as HTMLAnchorElement).style.textDecorationColor = ink;
+        }}
+        onMouseLeave={e => {
+          (e.currentTarget as HTMLAnchorElement).style.color = accent;
+          (e.currentTarget as HTMLAnchorElement).style.textDecorationColor = `${accent}50`;
+        }}
+      >
+        {children}
+      </a>
+    ),
+
+    // ── Images ────────────────────────────────────────────────────────────────
+    img: ({ src, alt, width, height }) => (
+      <span style={{ display: 'inline-block', verticalAlign: 'middle', margin: '4px 4px' }}>
+        <img
+          src={src ?? ''}
+          alt={alt ?? ''}
+          width={width}
+          height={height}
+          loading="lazy"
+          style={{
+            maxWidth: '100%',
+            border: `1px solid ${accentBorderStrong}`,
+            borderRadius: 3,
+            boxShadow: `0 4px 20px ${accent}22`,
+          }}
+          onError={e => { (e.currentTarget as HTMLImageElement).style.display = 'none'; }}
+        />
+      </span>
+    ),
+
+    // ── Inline bold / italic ──────────────────────────────────────────────────
+    strong: ({ children }) => (
+      <strong style={{ color: ink, fontWeight: 700 }}>{children}</strong>
+    ),
+
+    em: ({ children }) => (
+      <em style={{ color: inkMuted, fontStyle: 'italic' }}>{children}</em>
+    ),
+
+    // ── GitHub-flavored task-list checkbox ────────────────────────────────────
+    input: ({ type, checked, ...props }) => {
+      if (type === 'checkbox') {
+        return (
+          <input
+            type="checkbox"
+            checked={checked}
+            readOnly
+            style={{
+              accentColor: accent,
+              marginRight: 6,
+              cursor: 'default',
+            }}
+            {...props}
+          />
+        );
+      }
+      return <input type={type} {...props} />;
+    },
+
+    // ── HTML passthrough elements ─────────────────────────────────────────────
+    // These handle <div align="center">, <br>, etc. from GitHub readmes
+    div: ({ children, style, ...props }) => (
+      <div
+        style={{ ...(style as CSSProperties), marginBottom: 8 }}
+        {...props}
+      >
+        {children}
+      </div>
+    ),
+
+    br: () => <br />,
+  };
+}
+
+// ── Main export ───────────────────────────────────────────────────────────────
+export default function ReactMarkdownRenderer({
+  content,
+  accent,
+}: {
+  content: string;
+  accent: string;
+}) {
+  const components = buildComponents(accent);
+
+  return (
+    <div
+      style={{
+        fontFamily: fontSans,
+        color: inkMuted,
+        lineHeight: 1.85,
+        // GitHub-style readme container
+        background: 'rgba(255,255,255,0.015)',
+        border: `1px solid rgba(255,100,0,0.1)`,
+        borderRadius: 4,
+        padding: '24px 24px 8px',
+      }}
+    >
+      <ReactMarkdown
+        remarkPlugins={[remarkGfm]}
+        rehypePlugins={[rehypeRaw]}
+        components={components}
+      >
+        {content}
+      </ReactMarkdown>
+    </div>
+  );
 }

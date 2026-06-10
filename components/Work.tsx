@@ -8,9 +8,6 @@ import { featuredProjects } from '@/lib/projects';
 
 const projects = featuredProjects;
 
-
-
-
 /* ─── Per-card tilt wrapper with shared state for logo parallax ─────── */
 function ProjectCard({ p, i }: { p: typeof projects[0]; i: number }) {
   const cardRef = useRef<HTMLDivElement>(null);
@@ -174,11 +171,7 @@ function ProjectCard({ p, i }: { p: typeof projects[0]; i: number }) {
                   {p.title[0]}
                 </div>
               </div>
-
-              {/* View button */}
-              <a href={p.link} target="_blank" rel="noreferrer" className="manga-btn" style={{ position:'absolute', bottom:'16px', right:'16px', fontSize:'12px', padding:'8px 16px' }}>VIEW ↗</a>
             </div>
-
           </div>
         </SpotlightCard>
       </div>

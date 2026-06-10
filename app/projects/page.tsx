@@ -11,7 +11,6 @@ const FILTERS = [
   { key: 'android',   label: 'Android' },
   { key: 'fullstack', label: 'Full-Stack' },
   { key: 'web',       label: 'Web' },
-  { key: 'tool',      label: 'Library / Tool' },
 ] as const;
 
 // ── Tilt card wrapper ──────────────────────────────────────────────────────
@@ -218,10 +217,10 @@ export default function ProjectsPage() {
         display: 'flex', alignItems: 'center', justifyContent: 'space-between',
       }}>
         <Link href="/" style={{ fontFamily: "'Caesar Dressing', cursive", fontSize: 18, color: '#ff4500', textDecoration: 'none', letterSpacing: '0.05em' }}>
-          ← A·S
+          ← C·F
         </Link>
         <span style={{ fontFamily: "'Caesar Dressing', cursive", fontSize: 12, color: 'var(--accent-2)', letterSpacing: '0.2em' }}>PROJECTS</span>
-        <a href="/#works" style={{ fontSize: 11, color: 'var(--muted)', textDecoration: 'none', letterSpacing: '0.1em', fontFamily: "'Instrument Sans', sans-serif" }}>PORTFOLIO ↗</a>
+        <span></span>
       </nav>
 
       <main style={{ background: 'var(--paper)', minHeight: '100vh', position: 'relative', overflow: 'hidden' }}>
@@ -249,7 +248,7 @@ export default function ProjectsPage() {
 
               <motion.p initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.2 }}
                 style={{ fontSize: 14, color: 'var(--muted)', maxWidth: 480, lineHeight: 1.8, marginBottom: 40 }}>
-                Every project forged from scratch — Android apps, full-stack systems, open-source libraries. Click any card to read the README and dig into the details.
+                Every project I have worked, contributed to, collaborated on or published is listed here. From Play Store hits to small open-source libraries, it&apos;s all fire, no smoke.
               </motion.p>
 
               {/* Global stats */}
